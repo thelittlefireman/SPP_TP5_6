@@ -1,10 +1,10 @@
 /**
  * Created by Thomas on 08/04/2016.
  */
-public class main {
+public class PrimeMain {
 
     public static void main(String[] args) {
-        System.out.println();
+        System.out.println(PrimeAlgorithme2(13));
     }
 
     public static boolean PrimeAlgorithme(int number) {
