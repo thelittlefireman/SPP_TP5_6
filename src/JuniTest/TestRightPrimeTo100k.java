@@ -15,23 +15,48 @@ import java.util.List;
 /**
  * Created by Thomas on 08/04/2016.
  */
-public class TestRightPrimeTo100k extends TestCase{
+public class TestRightPrimeTo100k extends TestCase {
+    public final boolean DEBUG = false;
+
     @Test
-    public void testTo100k(){
+    public void testTo100kALGO1() {
         try {
             List<Object> tabPrimeTo100k = new ArrayList<>();
-            String line="";
+            String line = "";
             Path currentRelativePath = Paths.get("");
-            String file = currentRelativePath.toAbsolutePath().toString()+"/res/primes-to-100k.txt";
+            String file = currentRelativePath.toAbsolutePath().toString() + "/res/primes-to-100k.txt";
             BufferedReader buff = new BufferedReader(new FileReader(file));
             while ((line = buff.readLine()) != null) {
                 tabPrimeTo100k.add(Integer.valueOf(line));
             }
-            for(int i=0; 1 < 1000 ; i++ ){
-                assertEquals(PrimeMain.PrimeAlgorithme2(i) , tabPrimeTo100k.contains(i) );
+            for (int i = 2; i < 1000; i++) {
+                if (DEBUG)
+                    System.out.println("Number test : " + i + ":" + PrimeMain.PrimeAlgorithme2(i) + "Real:" + tabPrimeTo100k.contains(i));
+                assertEquals(PrimeMain.PrimeAlgorithme(i), tabPrimeTo100k.contains(i));
             }
-        }catch (Exception e){
-            assertFalse("erreur lecture de fichier",false);
+        } catch (Exception e) {
+            assertFalse("erreur lecture de fichier", false);
+        }
+    }
+
+    @Test
+    public void testTo100kALGO2() {
+        try {
+            List<Object> tabPrimeTo100k = new ArrayList<>();
+            String line = "";
+            Path currentRelativePath = Paths.get("");
+            String file = currentRelativePath.toAbsolutePath().toString() + "/res/primes-to-100k.txt";
+            BufferedReader buff = new BufferedReader(new FileReader(file));
+            while ((line = buff.readLine()) != null) {
+                tabPrimeTo100k.add(Integer.valueOf(line));
+            }
+            for (int i = 2; i < 1000; i++) {
+                if (DEBUG)
+                    System.out.println("Number test : " + i + ":" + PrimeMain.PrimeAlgorithme2(i) + "Real:" + tabPrimeTo100k.contains(i));
+                assertEquals(PrimeMain.PrimeAlgorithme2(i), tabPrimeTo100k.contains(i));
+            }
+        } catch (Exception e) {
+            assertFalse("erreur lecture de fichier", false);
         }
     }
 }
