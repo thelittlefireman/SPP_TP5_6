@@ -7,11 +7,11 @@ public class main {
         System.out.println();
     }
 
-    public boolean PrimeAlgorithme(int number) {
+    public static boolean PrimeAlgorithme(int number) {
         return false;
     }
 
-    public boolean PrimeAlgorithme2(int number) {
+    public static boolean PrimeAlgorithme2(int number) {
         int i = 2;
         if (number == 2)
             return true;
