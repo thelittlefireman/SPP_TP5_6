@@ -19,4 +19,8 @@ public class TestedNumber {
     public TestedNumber(int nb) {
         this.number = nb;
     }
+    public TestedNumber(int nb, boolean isPrime) {
+        this(nb);
+        this.isPrime = isPrime;
+    }
 }
