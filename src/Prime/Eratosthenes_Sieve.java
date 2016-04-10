@@ -73,6 +73,7 @@ public class Eratosthenes_Sieve {
                     if(DEBUG)
                     System.out.println("for : " +i +" & worker set to :" + runnableWorker.getNumberWorker() + " start :" + start + " end :" + end + " add :" + add);
                     runnableWorker.setParameters(start, end, add);
+
                     j += div;
                 }
 
@@ -187,7 +188,7 @@ public class Eratosthenes_Sieve {
 
         public void work() {
             workDone = false;
-            for (; start < end; start += add) {
+            for (; start <= end; start += add) {
                 setAVal(this.getNumberWorker(),start, false);
                 yield();
             }
