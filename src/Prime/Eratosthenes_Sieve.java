@@ -64,17 +64,22 @@ public class Eratosthenes_Sieve {
                 //séparation du travail en fonction du nombre de thread
                 //  distribute work among the k worker threads (*)
                 int div = ((realNumber - (int) Math.pow(i, 2)) / numberWorker);
+                if(DEBUG)
+                    System.out.println("div : "+div);
                 int j = (int) Math.pow(i, 2);
                 for (RunnableWorker runnableWorker : listWorker) {
 //calculer ensuite les start end adds
                     int start = j;
-                    int end = j + div < realNumber ? j + div : realNumber-1;
                     int add = i;
+                   // int end = j + div <= realNumber ? j + div : realNumber-1;
+                    int end = j + div*add;
                     if(DEBUG)
                     System.out.println("for : " +i +" & worker set to :" + runnableWorker.getNumberWorker() + " start :" + start + " end :" + end + " add :" + add);
-                    runnableWorker.setParameters(start, end, add);
+                    runnableWorker.setParameters(start, end, add,realNumber);
 
-                    j += div;
+                    j = j + add*div;
+                    if(DEBUG)
+                    System.out.println("j:"+j);
                 }
 
                 //unblock the k worker threads (using the appropriate action)
@@ -156,6 +161,7 @@ public class Eratosthenes_Sieve {
     public static class RunnableWorker extends Thread implements Runnable {
         private int start;
         private int end;
+        private int realNumber;
         private int add;
 
         public int getNumberWorker() {
@@ -180,15 +186,16 @@ public class Eratosthenes_Sieve {
             this.numberWorker = numberWorker;
         }
 
-        public void setParameters(int start, int end, int add) {
+        public void setParameters(int start, int end, int add, int realNumber) {
             this.start = start;
             this.end = end;
             this.add = add;
+            this.realNumber =realNumber;
         }
 
         public void work() {
             workDone = false;
-            for (; start <= end; start += add) {
+            for (; start <= end&& start<realNumber; start += add) {
                 setAVal(this.getNumberWorker(),start, false);
                 yield();
             }

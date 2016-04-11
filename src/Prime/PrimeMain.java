@@ -14,7 +14,7 @@ public class PrimeMain {
         System.out.println(PrimeAlgorithme2(13));
     }*/
     public static void main(String[] args) {
-        System.out.println(PrimeAlgorithmeThread(131)[131]);
+        System.out.println(PrimeAlgorithmeThread(20012)[20012]);
     }
 
 }
