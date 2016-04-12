@@ -21,7 +21,7 @@ public class Eratosthenes_Sieve {
 
     public static CyclicBarrier barrier = null;
     public static int numberWorker = 2;
-    private static boolean[] A;
+    public static boolean[] A;
     private static List<RunnableWorker> listWorker;
 
     public static boolean[] PrimeAlgorithme(int n) {
@@ -33,7 +33,7 @@ public class Eratosthenes_Sieve {
         for (int i = 2; i <= sqrtInt; i++) {
             if (A[i] == true) {
                 for (int j = (int) Math.pow(i, 2); j < realNumber; j += i) {
-                    setAVal(j, false);
+                    A[j]= false;
                 }
             }
         }
@@ -61,7 +61,7 @@ public class Eratosthenes_Sieve {
             runnableWorker.start();
         }
         for (int i = 2; i <= sqrtInt; i++) {
-            if (getAVal(i)) {
+            if (A[i]) {
                 //séparation du travail en fonction du nombre de thread
                 //  distribute work among the k worker threads (*)
                 int div = ((realNumber - (int) Math.pow(i, 2)) / numberWorker);
@@ -109,11 +109,11 @@ public class Eratosthenes_Sieve {
             runnableWorker.interrupt();
         }
         if (DEBUG)
-            System.out.println("rst :" + "nb: =" + (n) + getAVal(n));
+            System.out.println("rst :" + "nb: =" + (n) + A[n]);
         return A;
     }
 
-    public static boolean[] getA() {
+   /* public static boolean[] getA() {
         try {
             readLock.lock();
             return A;
@@ -157,6 +157,6 @@ public class Eratosthenes_Sieve {
         writeLock.lock();
         A = a;
         writeLock.unlock();
-    }
+    }*/
 
 }

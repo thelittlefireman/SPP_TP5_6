@@ -44,7 +44,7 @@ public class RunnableWorker extends Thread implements Runnable {
     public void work() {
         workDone = false;
         for (; start <= end && start < realNumber; start += add) {
-            Eratosthenes_Sieve.setAVal(this.getNumberWorker(), start, false);
+            Eratosthenes_Sieve.A[start]= false;
             yield();
         }
         workDone = true;

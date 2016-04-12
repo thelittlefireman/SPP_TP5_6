@@ -1,5 +1,7 @@
 package Prime;
 
+import JuniTest.TestRightPrimeTo100k;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class PrimeMain {
     }*/
     public static void main(String[] args) {
         System.out.println(PrimeAlgorithmeThread(20012)[20012]);
+        TestRightPrimeTo100k.perfromanceBenchmark();
     }
 
 }
