@@ -77,7 +77,7 @@ public class Eratosthenes_Sieve {
                         System.out.println("for : " + i + " & worker set to :" + runnableWorker.getNumberWorker() + " start :" + start + " end :" + end + " add :" + add);
                     runnableWorker.setParameters(start, end, add, realNumber);
 
-                    j = j + add * div;
+                    j = end;
                     if (DEBUG)
                         System.out.println("j:" + j);
                 }
