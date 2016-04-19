@@ -52,7 +52,7 @@ public class TestRightPrimeTo100k extends TestCase {
 
         List<Object> tabPrimeTo100k = getPrime1000kFile();
 
-        boolean[] testAlogo = Eratosthenes_Sieve.PrimeAlgorithmeThread(2, totalInt);
+        boolean[] testAlogo = Eratosthenes_Sieve.PrimeAlgorithmeThread(4, totalInt);
             for (int i = 0; i < totalInt; i++) {
                 if (DEBUG)
                     System.out.println("Number test : " + i + ":" + testAlogo[i] + " Real :" + tabPrimeTo100k.contains(i));

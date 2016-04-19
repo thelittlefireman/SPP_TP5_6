@@ -20,7 +20,7 @@ public class Eratosthenes_Sieve {
     public static Lock writeLock = readWriteLock.writeLock();
 
     public static CyclicBarrier barrier = null;
-    public static int numberWorker = 2;
+    public static int numberWorker = 5;
     public static boolean[] A;
     private static List<RunnableWorker> listWorker;
 
@@ -46,6 +46,7 @@ public class Eratosthenes_Sieve {
     }
 
     public static boolean[] PrimeAlgorithmeThread(int n) {
+
         int realNumber = n + 1;
         barrier = new CyclicBarrier(numberWorker + 1);
         A = new boolean[realNumber];
