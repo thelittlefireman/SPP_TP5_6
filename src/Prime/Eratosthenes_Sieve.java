@@ -14,7 +14,7 @@ import static java.lang.Thread.sleep;
  * Created by Guillaume on 08/04/2016.
  */
 public class Eratosthenes_Sieve {
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     public static Lock readLock = readWriteLock.readLock();
     public static Lock writeLock = readWriteLock.writeLock();
@@ -65,7 +65,8 @@ public class Eratosthenes_Sieve {
             if (A[i]) {
                 //séparation du travail en fonction du nombre de thread
                 //  distribute work among the k worker threads (*)
-                int div = ((realNumber - (int) Math.pow(i, 2)) / numberWorker);
+               // int div = ((realNumber - (int) Math.pow(i, 2)) / (numberWorker+numberWorker-1));
+                int div = ((realNumber - (int) Math.pow(i, 2)) / (numberWorker));
                 if (DEBUG)
                     System.out.println("div : " + div);
                 int j = (int) Math.pow(i, 2);
@@ -81,6 +82,7 @@ public class Eratosthenes_Sieve {
                     j = end;
                     if (DEBUG)
                         System.out.println("j:" + j);
+
                 }
 
                 //unblock the k worker threads (using the appropriate action)

@@ -89,11 +89,11 @@ public class TestRightPrimeTo100k extends TestCase {
             end = System.currentTimeMillis();
             time[0][i]= (end - start);
 
-        //tow Thread
+        //four Thread
 
 
             start = System.currentTimeMillis();
-            Eratosthenes_Sieve.PrimeAlgorithmeThread(2, nbPrimeTest);
+            Eratosthenes_Sieve.PrimeAlgorithmeThread(4, nbPrimeTest);
             end = System.currentTimeMillis();
             time[1][i]= (end - start);
 
@@ -119,7 +119,7 @@ frame.setBounds(100,100,256,256);
 
 
 
-               String[] rows = {"mono Thread","tow Thread","ten Thread"};          // Create data set title
+               String[] rows = {"mono Thread","four Thread","ten Thread"};          // Create data set title
 
                String title = "Temps en milisec en fonction du nombre recherché";          // Create diagram title
 
