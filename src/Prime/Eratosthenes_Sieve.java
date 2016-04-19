@@ -65,8 +65,10 @@ public class Eratosthenes_Sieve {
             if (A[i]) {
                 //séparation du travail en fonction du nombre de thread
                 //  distribute work among the k worker threads (*)
-               // int div = ((realNumber - (int) Math.pow(i, 2)) / (numberWorker+numberWorker-1));
-                int div = ((realNumber - (int) Math.pow(i, 2)) / (numberWorker));
+                int totalEnd = (realNumber - (int) Math.pow(i, 2));
+                int div = totalEnd / (numberWorker*i);
+                int endDernierThread = totalEnd % (numberWorker*i);
+                //int div = ((realNumber - (int) Math.pow(i, 2)) / (numberWorker));
                 if (DEBUG)
                     System.out.println("div : " + div);
                 int j = (int) Math.pow(i, 2);
@@ -77,8 +79,11 @@ public class Eratosthenes_Sieve {
                     int end = j + div * add;
                     if (DEBUG)
                         System.out.println("for : " + i + " & worker set to :" + runnableWorker.getNumberWorker() + " start :" + start + " end :" + end + " add :" + add);
-                    runnableWorker.setParameters(start, end, add, realNumber);
-
+                    if(runnableWorker.getNumberWorker() == listWorker.size()-1) {
+                        runnableWorker.setParameters(start, end+endDernierThread, add, realNumber);
+                    }else {
+                        runnableWorker.setParameters(start, end, add, realNumber);
+                    }
                     j = end;
                     if (DEBUG)
                         System.out.println("j:" + j);
