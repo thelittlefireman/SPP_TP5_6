@@ -17,7 +17,8 @@ public class PrimeMain {
     }*/
     public static void main(String[] args) {
         int nb= 5;
-        System.out.println(" Est ce que "+nb + " est un nombre premier ? :"+PrimeAlgorithmeThread(100000)[nb]);
+        //System.out.println(" Est ce que "+nb + " est un nombre premier ? :"+PrimeAlgorithmeThread(100000)[nb]);
+
         TestRightPrimeTo100k.perfromanceBenchmark();
     }
 

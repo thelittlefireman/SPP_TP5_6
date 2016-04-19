@@ -14,7 +14,7 @@ import static java.lang.Thread.sleep;
  * Created by Guillaume on 08/04/2016.
  */
 public class Eratosthenes_Sieve {
-    public static final boolean DEBUG = true;
+    public static boolean DEBUG = true;
     public static ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     public static Lock readLock = readWriteLock.readLock();
     public static Lock writeLock = readWriteLock.writeLock();

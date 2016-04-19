@@ -16,6 +16,9 @@ import org.junit.Test;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -35,14 +38,14 @@ public class TestRightPrimeTo100k extends TestCase {
 
     @Test
     public void testTo100kALGO1() {
-            List<Object> tabPrimeTo100k =  getPrime1000kFile();
+        List<Object> tabPrimeTo100k = getPrime1000kFile();
 
-            boolean[] testAlogo = Eratosthenes_Sieve.PrimeAlgorithme(totalInt);
-            for (int i = 0; i < totalInt; i++) {
-                if (DEBUG)
-                    System.out.println("Number test : " + i + ":" + testAlogo[i] + "Real:" + tabPrimeTo100k.contains(i));
-                assertEquals("Number test : " + i + ":" + testAlogo[i] + "Real:" + tabPrimeTo100k.contains(i), testAlogo[i], tabPrimeTo100k.contains(i));
-            }
+        boolean[] testAlogo = Eratosthenes_Sieve.PrimeAlgorithme(totalInt);
+        for (int i = 0; i < totalInt; i++) {
+            if (DEBUG)
+                System.out.println("Number test : " + i + ":" + testAlogo[i] + "Real:" + tabPrimeTo100k.contains(i));
+            assertEquals("Number test : " + i + ":" + testAlogo[i] + "Real:" + tabPrimeTo100k.contains(i), testAlogo[i], tabPrimeTo100k.contains(i));
+        }
 
     }
 
@@ -53,11 +56,11 @@ public class TestRightPrimeTo100k extends TestCase {
         List<Object> tabPrimeTo100k = getPrime1000kFile();
 
         boolean[] testAlogo = Eratosthenes_Sieve.PrimeAlgorithmeThread(4, totalInt);
-            for (int i = 0; i < totalInt; i++) {
-                if (DEBUG)
-                    System.out.println("Number test : " + i + ":" + testAlogo[i] + " Real :" + tabPrimeTo100k.contains(i));
-                assertEquals("Number test : " + i + ":" + testAlogo[i] + " Real :" + tabPrimeTo100k.contains(i), testAlogo[i], tabPrimeTo100k.contains(i));
-            }
+        for (int i = 0; i < totalInt; i++) {
+            if (DEBUG)
+                System.out.println("Number test : " + i + ":" + testAlogo[i] + " Real :" + tabPrimeTo100k.contains(i));
+            assertEquals("Number test : " + i + ":" + testAlogo[i] + " Real :" + tabPrimeTo100k.contains(i), testAlogo[i], tabPrimeTo100k.contains(i));
+        }
     }
 
     @Test
@@ -75,40 +78,42 @@ public class TestRightPrimeTo100k extends TestCase {
     }
 
     @Test
-    public static void perfromanceBenchmark(){
-        long start=0,end=0;
+    public static void perfromanceBenchmark() {
+        Eratosthenes_Sieve.DEBUG = false;
+        long start = 0, end = 0;
 
         //mono Thread
         double[][] time = new double[3][100];
         double[] columns = new double[100];
-        for(int i = 0 ; i<100 ; i++) {
-            int nbPrimeTest = (int) (500000*Math.random());
-            columns[i]=nbPrimeTest;
+        for (int i = 0; i < 100; i++) {
+            int nbPrimeTest = (int) (500000 * Math.random());
+            columns[i] = nbPrimeTest;
             start = System.currentTimeMillis();
             Eratosthenes_Sieve.PrimeAlgorithme(nbPrimeTest);
             end = System.currentTimeMillis();
-            time[0][i]= (end - start);
+            time[0][i] = (end - start);
 
-        //four Thread
+            //four Thread
 
 
             start = System.currentTimeMillis();
             Eratosthenes_Sieve.PrimeAlgorithmeThread(4, nbPrimeTest);
             end = System.currentTimeMillis();
-            time[1][i]= (end - start);
+            time[1][i] = (end - start);
 
-        //ten Thread
+            //ten Thread
 
 
             start = System.currentTimeMillis();
             Eratosthenes_Sieve.PrimeAlgorithmeThread(10, nbPrimeTest);
             end = System.currentTimeMillis();
-            time[2][i]= (end - start);
-            System.out.println(i+"%"+time[0][i]+"|"+time[1][i]+"|"+time[2][i]);
+            time[2][i] = (end - start);
+            System.out.println(i + "% " + time[0][i] + "|" + time[1][i] + "|" + time[2][i]);
         }
 
         JFrame frame = new JFrame();
-frame.setBounds(100,100,256,256);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBounds(100, 100, 512, 512);
         JPanel p = new JPanel();
         p.setLayout(new FlowLayout());
 
@@ -118,38 +123,37 @@ frame.setBounds(100,100,256,256);
         content.add(p, BorderLayout.SOUTH);
 
 
+        String[] rows = {"mono Thread", "four Thread", "ten Thread"};          // Create data set title
 
-               String[] rows = {"mono Thread","four Thread","ten Thread"};          // Create data set title
+        String title = "Temps en milisec en fonction du nombre recherché";          // Create diagram title
 
-               String title = "Temps en milisec en fonction du nombre recherché";          // Create diagram title
+        int width = 640;                        // Image size
+        int height = 480;
 
-                int width = 640;                        // Image size
-               int height = 480;
-
-                // Create data model
+        // Create data model
         DefaultChartDataModel data = new DefaultChartDataModel(time, columns, rows);
 
-                // Create chart with default coordinate system
+        // Create chart with default coordinate system
         ChartPanel c = new ChartPanel(data, title, DefaultChart.LINEAR_X_LINEAR_Y);
 
-                // Add a line chart renderer
-             //   c.addChartRenderer(new PlotChartRenderer(c,data)new LineChartRenderer(c.getCoordSystem(), data), 1);
-                c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(),data), 1);
-                c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(),data), 2);
-                c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(),data), 3);
+        // Add a line chart renderer
+        //   c.addChartRenderer(new PlotChartRenderer(c,data)new LineChartRenderer(c.getCoordSystem(), data), 1);
+        c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(), data), 1);
+        c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(), data), 2);
+        c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(), data), 3);
 
-                // Set the chart size
-                c.setBounds(new Rectangle(0, 0, width, height));
+        // Set the chart size
+        c.setBounds(new Rectangle(0, 0, width, height));
 
-                // Export the chart as a PNG image
-                try {
-                        ChartEncoder.createEncodedImage(new FileOutputStream(System.getProperty("user.home")+"/first.png"), c, "png");
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
+        // Export the chart as a PNG image
+        try {
+            ChartEncoder.createEncodedImage(new FileOutputStream(System.getProperty("user.home") + "/first.png"), c, "png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         content.add(c, BorderLayout.CENTER);
         frame.setVisible(true);
-            }
+    }
 
     public List<Object> getPrime1000kFile() {
         List<Object> tabPrimeTo100k = new ArrayList<>();
