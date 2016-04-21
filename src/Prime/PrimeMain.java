@@ -5,6 +5,7 @@ import JuniTest.TestRightPrimeTo100k;
 import java.util.ArrayList;
 import java.util.List;
 
+import static JuniTest.TestRightPrimeTo100k.nbThreadBench;
 import static Prime.Eratosthenes_Sieve.PrimeAlgorithme;
 import static Prime.Eratosthenes_Sieve.PrimeAlgorithmeThread;
 
@@ -18,10 +19,10 @@ public class PrimeMain {
     }*/
     public static void main(String[] args) {
         int nb= 120000;
-        //sPrimeAlgorithme(nb);
+        PrimeAlgorithme(nb);
         //System.out.println(" Est ce que "+nb + " est un nombre premier ? :"+PrimeAlgorithmeThread(100000)[nb]);
-
-        TestRightPrimeTo100k.perfromanceBenchmark(4000000);
+        //nbThreadBench();
+        //TestRightPrimeTo100k.perfromanceBenchmark(4000000);
     }
 
 }

@@ -78,9 +78,90 @@ public class TestRightPrimeTo100k extends TestCase {
     }
 
     @Test
+    public static void nbThreadBench() {
+        int nbThreadMax = 11;
+        int nbNombreTester[] = {500000, 1000000, 2000000, 4000000};
+        //mono Thread
+        double[][] time = new double[nbNombreTester.length][nbThreadMax];
+        double[] columns = new double[nbNombreTester.length];
+        long start = 0, end = 0;
+        for (int nbThread = 1; nbThread < nbThreadMax; nbThread++) {
+            if (nbThread == 1) {
+                for (int nb = 0; nb < nbNombreTester.length; nb++) {
+                    start = System.currentTimeMillis();
+                    Eratosthenes_Sieve.PrimeAlgorithme(nbNombreTester[nb]);
+                    end = System.currentTimeMillis();
+                    time[nb][nbThread - 1] = (end - start);
+                    System.out.println(nbThread * nb + "/ " + nbThreadMax * nbNombreTester.length);
+                }
+
+            } else {
+                for (int nb = 0; nb < nbNombreTester.length; nb++) {
+                    start = System.currentTimeMillis();
+                    Eratosthenes_Sieve.PrimeAlgorithmeThread(nbThread, nbNombreTester[nb]);
+                    end = System.currentTimeMillis();
+                    time[nb][nbThread - 1] = (end - start);
+                    System.out.println(nbThread * nb + "/ " + nbThreadMax * nbNombreTester.length);
+                }
+            }
+        }
+
+
+        for (int u=0; u < nbThreadMax; u++) {
+            for (int i = 0; i < nbNombreTester.length; i++) {
+                System.out.println("["+nbNombreTester[i]+"]"+"["+(u+1)+"]"+ time[i][u]);
+            }
+        }
+        System.out.println("fini");
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBounds(100, 100, 512, 512);
+        JPanel p = new JPanel();
+        p.setLayout(new FlowLayout());
+
+
+        Container content = frame.getContentPane();
+        content.setLayout(new BorderLayout()); // Used to center the panel
+        content.add(p, BorderLayout.SOUTH);
+
+
+        String[] rows = {"500000", "1000000", "2000000", "4000000"};          // Create data set title
+
+        String title = "Temps en milisec en fonction du nombre threads";          // Create diagram title
+
+        int width = 640;                        // Image size
+        int height = 480;
+
+        // Create data model
+        DefaultChartDataModel data = new DefaultChartDataModel(time, columns, rows);
+
+        // Create chart with default coordinate system
+        ChartPanel c = new ChartPanel(data, title, DefaultChart.LINEAR_X_LINEAR_Y);
+
+        // Add a line chart renderer
+        //   c.addChartRenderer(new PlotChartRenderer(c,data)new LineChartRenderer(c.getCoordSystem(), data), 1);
+        c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(), data), 1);
+        c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(), data), 2);
+        c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(), data), 3);
+        c.addChartRenderer(new PlotChartRenderer(c.getCoordSystem(), data), 4);
+        // Set the chart size
+        c.setBounds(new Rectangle(0, 0, width, height));
+
+        // Export the chart as a PNG image
+        try {
+            ChartEncoder.createEncodedImage(new FileOutputStream(System.getProperty("user.home") + "/first.png"), c, "png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        content.add(c, BorderLayout.CENTER);
+        frame.setVisible(true);
+
+    }
+
+    @Test
     public static void perfromanceBenchmark(int n) {
-        if (n==0){
-            n= 500000;
+        if (n == 0) {
+            n = 500000;
         }
         Eratosthenes_Sieve.DEBUG = false;
         long start = 0, end = 0;
