@@ -78,7 +78,10 @@ public class TestRightPrimeTo100k extends TestCase {
     }
 
     @Test
-    public static void perfromanceBenchmark() {
+    public static void perfromanceBenchmark(int n) {
+        if (n==0){
+            n= 500000;
+        }
         Eratosthenes_Sieve.DEBUG = false;
         long start = 0, end = 0;
 
@@ -86,7 +89,7 @@ public class TestRightPrimeTo100k extends TestCase {
         double[][] time = new double[3][100];
         double[] columns = new double[100];
         for (int i = 0; i < 100; i++) {
-            int nbPrimeTest = (int) (500000 * Math.random());
+            int nbPrimeTest = (int) (n * Math.random());
             columns[i] = nbPrimeTest;
             start = System.currentTimeMillis();
             Eratosthenes_Sieve.PrimeAlgorithme(nbPrimeTest);

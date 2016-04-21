@@ -24,55 +24,82 @@ public class Eratosthenes_Sieve {
     public static boolean[] A;
     private static List<RunnableWorker> listWorker;
 
+    /**
+     * Méthode de calcule séquentielle
+     * @param n nombre à tester
+     * @return true = premier; false = non premier
+     */
     public static boolean[] PrimeAlgorithme(int n) {
+        // on crée notre tableau de taille n+1 (i.e. un tableau commence à 0)
         int realNumber = n + 1;
         A = new boolean[realNumber];
+        //On l'initialise à true
         for (int i = 0; i < realNumber; i++)
             A[i] = true;
         int sqrtInt = (int) Math.ceil(Math.sqrt(realNumber));
-        System.out.println("Squrtint = " + sqrtInt);
+        if (DEBUG)
+            System.out.println("Squrtint = " + sqrtInt);
         for (int i = 2; i <= sqrtInt; i++) {
-            if (A[i] == true) {
+            //Si notre nombre est toujours considéré comme un nombre premier alors on supprime tous ses mutltiples
+            if (A[i]) {
+                //pour tous ses multilples on les coches à faux (ils ne sont pas premier)
                 for (int j = (int) Math.pow(i, 2); j < realNumber; j += i) {
-                    A[j]= false;
+                    A[j] = false;
                 }
             }
         }
         return A;
     }
 
+    /**
+     * Méthode de calcule par thread
+     * @param numberOfThread nombre de thread
+     * @param n nombre à tester
+     * @return true = premier; false = non premier
+     */
     public static boolean[] PrimeAlgorithmeThread(int numberOfThread, int n) {
         numberWorker = numberOfThread;
         return PrimeAlgorithmeThread(n);
     }
 
+    /**
+     * Méthode de calcule par thread
+     * @param n nombre à tester
+     * @return true = premier; false = non premier
+     */
     public static boolean[] PrimeAlgorithmeThread(int n) {
-
+        // on crée notre tableau de taille n+1 (i.e. un tableau commence à 0)
         int realNumber = n + 1;
-        barrier = new CyclicBarrier(numberWorker + 1);
         A = new boolean[realNumber];
+        //Nous créons notre barrière cyclique de nombre de worker + 1 pour le thread principal
+        barrier = new CyclicBarrier(numberWorker + 1);
+        //on garde une liste des threads
         listWorker = new ArrayList<>();
+        //on initialise notre tableau a true
         for (int i = 0; i < realNumber; i++)
             A[i] = true;
         int sqrtInt = (int) Math.ceil(Math.sqrt(realNumber));
         for (int i = 0; i < numberWorker; i++) {
+            // on crére nos thread travailleurs
             RunnableWorker runnableWorker = new RunnableWorker(i);
             listWorker.add(runnableWorker);
             if (DEBUG)
                 System.out.println("create a worker" + i);
+            //on les lances
             runnableWorker.start();
         }
         for (int i = 2; i <= sqrtInt; i++) {
+            //Si notre nombre est toujours considéré comme un nombre premier alors on supprime tous ses mutltiples
             if (A[i]) {
                 //séparation du travail en fonction du nombre de thread
                 //  distribute work among the k worker threads (*)
                 int totalEnd = (realNumber - (int) Math.pow(i, 2));
-                int div = totalEnd / (numberWorker*i);
-                int endDernierThread = totalEnd % (numberWorker*i);
-                //int div = ((realNumber - (int) Math.pow(i, 2)) / (numberWorker));
+                int div = totalEnd / (numberWorker * i);
+                int endDernierThread = totalEnd % (numberWorker * i);
                 if (DEBUG)
                     System.out.println("div : " + div);
                 int j = (int) Math.pow(i, 2);
+                // on règles nos workers en fonction du travail qu'ils doivent effectuer
                 for (RunnableWorker runnableWorker : listWorker) {
                     //calculer ensuite les start end adds
                     int start = j;
@@ -80,9 +107,9 @@ public class Eratosthenes_Sieve {
                     int end = j + div * add;
                     if (DEBUG)
                         System.out.println("for : " + i + " & worker set to :" + runnableWorker.getNumberWorker() + " start :" + start + " end :" + end + " add :" + add);
-                    if(runnableWorker.getNumberWorker() == listWorker.size()-1) {
-                        runnableWorker.setParameters(start, end+endDernierThread, add, realNumber);
-                    }else {
+                    if (runnableWorker.getNumberWorker() == listWorker.size() - 1) {
+                        runnableWorker.setParameters(start, end + endDernierThread, add, realNumber);
+                    } else {
                         runnableWorker.setParameters(start, end, add, realNumber);
                     }
                     j = end;
@@ -90,7 +117,7 @@ public class Eratosthenes_Sieve {
                         System.out.println("j:" + j);
 
                 }
-
+                // on débloque nos travailleur : nos threads worker en await + 1 le thread principal en await = la barrière lance tout le monde
                 //unblock the k worker threads (using the appropriate action)
                 if (DEBUG)
                     System.out.println("launch all Thread");
@@ -101,6 +128,7 @@ public class Eratosthenes_Sieve {
                 } catch (BrokenBarrierException e) {
                     e.printStackTrace();
                 }
+                // on attends que nos workers ai finis
                 //wait for all worker threads to complete their iteration (**)
                 while (barrier.getNumberWaiting() != numberWorker) {
                    /* try {
@@ -113,6 +141,7 @@ public class Eratosthenes_Sieve {
 
             }
         }
+        // on stop nos workers
         for (RunnableWorker runnableWorker : listWorker) {
             runnableWorker.setNeedMeAgain(false);
             runnableWorker.interrupt();

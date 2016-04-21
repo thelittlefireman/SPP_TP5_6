@@ -56,6 +56,7 @@ public class RunnableWorker extends Thread implements Runnable {
     public void run() {
         while (needMeAgain) {
             try {
+                // nos workers attendent le top départ
                 if (Eratosthenes_Sieve.DEBUG)
                     System.out.println("Thread " + this.numberWorker + " is calling await()");
                 Eratosthenes_Sieve.barrier.await();
@@ -67,6 +68,7 @@ public class RunnableWorker extends Thread implements Runnable {
             } catch (BrokenBarrierException ex) {
                 return;
             }
+            // notre worker fait son travail
             work();
         }
 

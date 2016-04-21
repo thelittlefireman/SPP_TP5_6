@@ -18,10 +18,10 @@ public class PrimeMain {
     }*/
     public static void main(String[] args) {
         int nb= 120000;
-        PrimeAlgorithme(nb);
+        //sPrimeAlgorithme(nb);
         //System.out.println(" Est ce que "+nb + " est un nombre premier ? :"+PrimeAlgorithmeThread(100000)[nb]);
 
-        //TestRightPrimeTo100k.perfromanceBenchmark();
+        TestRightPrimeTo100k.perfromanceBenchmark(4000000);
     }
 
 }
