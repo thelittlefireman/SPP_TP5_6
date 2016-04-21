@@ -29,7 +29,8 @@ public class Eratosthenes_Sieve {
         A = new boolean[realNumber];
         for (int i = 0; i < realNumber; i++)
             A[i] = true;
-        int sqrtInt = (int) Math.sqrt(realNumber);
+        int sqrtInt = (int) Math.ceil(Math.sqrt(realNumber));
+        System.out.println("Squrtint = " + sqrtInt);
         for (int i = 2; i <= sqrtInt; i++) {
             if (A[i] == true) {
                 for (int j = (int) Math.pow(i, 2); j < realNumber; j += i) {
@@ -53,7 +54,7 @@ public class Eratosthenes_Sieve {
         listWorker = new ArrayList<>();
         for (int i = 0; i < realNumber; i++)
             A[i] = true;
-        int sqrtInt = (int) Math.sqrt(realNumber);
+        int sqrtInt = (int) Math.ceil(Math.sqrt(realNumber));
         for (int i = 0; i < numberWorker; i++) {
             RunnableWorker runnableWorker = new RunnableWorker(i);
             listWorker.add(runnableWorker);
